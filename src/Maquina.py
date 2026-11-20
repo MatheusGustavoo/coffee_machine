@@ -1,5 +1,14 @@
 import enum
 
+from src.Estoque import Estoque
+from src.Excessoes import (
+    CreditoInsuficienteError,
+    EstoqueVazioError,
+    MaquinaIndisponivelError,
+    ProdutoIndisponivelError,
+)
+from src.Pedido import Pedido
+
 
 class Estado_Maquina(enum.Enum):
     PRONTA = "aceita crédito e pedidos"
@@ -19,6 +28,44 @@ class Maquina:
     def __init__(self) -> None:
         self._estado = Estado_Maquina.PRONTA
         self._credito = 0.0
+        self.estoque: Estoque
         print(
             f"Máquina inicializada. Estado: {self._estado.value}. Crédito: R${self._credito:.2f}"
         )
+
+    def inserir_credito(self, valor: float) -> str:
+        self._credito += valor
+        return f"Crédito inserido: R${valor:.2f}. Crédito total: R${self._credito:.2f}"
+
+    def realizar_pedido(self):
+        if self._estado != Estado_Maquina.PRONTA:
+            raise MaquinaIndisponivelError(
+                f"A máquina não está disponível para iniciar um pedido. Estado atual: {self._estado.value}"
+            )
+        try:
+            pedido = Pedido(status_maquina=self._estado)
+            self.set_estado(Estado_Maquina.PREPARANDO)
+            self._verificar_elegibilidade_do_pedido(pedido)
+            return "Pedido iniciado. A máquina está preparando a bebida."
+        except Exception as e:
+            return str(e)
+
+    def _verificar_elegibilidade_do_pedido(self, pedido: Pedido) -> None:
+        if self._credito < pedido.get_valor_total():
+            raise CreditoInsuficienteError(
+                "Crédito insuficiente. Por favor, insira crédito antes de iniciar um pedido."
+            )
+
+        elif self.estoque.vazio():
+            raise EstoqueVazioError(
+                "Estoque vazio. Por favor, reabasteça o estoque antes de iniciar um pedido."
+            )
+        for produto in self.estoque.listar_produtos():
+            if produto.get_quantidade() <= 0:
+                raise ProdutoIndisponivelError(
+                    f"Produto {produto} indisponível. Por favor, reabasteça o estoque."
+                )
+
+    def set_estado(self, estado: Estado_Maquina) -> None:
+        self._estado = estado
+        print(f"Estado da máquina alterado para: {self._estado.value}")

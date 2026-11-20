@@ -11,3 +11,6 @@ class Estoque:
 
     def listar_produtos(self):
         return self.produtos
+
+    def vazio(self):
+        return len(self.produtos) == 0

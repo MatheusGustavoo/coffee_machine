@@ -1,4 +1,4 @@
-from src.Estados import Estado_Maquina
+from Maquina import Estado_Maquina
 
 
 class Pedido:
@@ -23,15 +23,3 @@ class Pedido:
             self._valor_total += valor
         elif operacao == "subtrair":
             self._valor_total -= valor
-
-    # TODO: Implementar a função de verificação de condições para aceitar ou recusar o pedido ao implementar as regras de negócio.
-    # def _verificar_condicoes_pedido(self, ) -> bool:
-    #     status = (
-    #         self._status_maquina == Estado_Maquina.PRONTA
-    #         and self.self._valor_total > 0
-    #         and self._status_maquina == Estado_Maquina.MANUTENCAO,
-    #     )
-    #     if self._status_maquina == Estado_Maquina.PRONTA:
-    #         return True
-    #     else:
-    #         return False
