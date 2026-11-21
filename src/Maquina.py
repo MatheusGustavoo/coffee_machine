@@ -9,6 +9,7 @@ from src.Excessoes import (
     ProdutoIndisponivelError,
 )
 from src.Pedido import Pedido
+from src.PedidoDTO import PedidoDTO
 
 
 class Estado_Maquina(enum.Enum):
@@ -36,16 +37,16 @@ class Maquina:
             f"Crédito: R${self._credito.disponivel:.2f}"
         )
 
-    def realizar_pedido(self):
+    def criar_pedidor(self, itens_pedido: PedidoDTO):
         if self._estado != Estado_Maquina.PRONTA:
             raise MaquinaIndisponivelError(
                 f"A máquina não está disponível para iniciar um pedido. Estado atual: {self._estado.value}"
             )
         try:
-            pedido = Pedido(status_maquina=self._estado)
-            self._verificar_elegibilidade_do_pedido(pedido)
+            pedido = Pedido()
             self.set_estado(Estado_Maquina.PREPARANDO)
-            return "Pedido iniciado. A máquina está preparando a bebida."
+            pedido.incluir_item(itens_pedido)
+            # return "Pedido iniciado. A máquina está preparando a bebida."
         except Exception as e:
             return str(e)
 
@@ -69,7 +70,7 @@ class Maquina:
         self._estado = estado
         print(f"Estado da máquina alterado para: {self._estado.value}")
 
-    def inserir_credito(self, valor: float | int) -> None:
+    def inserir_credito(self, valor: float) -> None:
         valor_tipado = Valores.de_valor(valor)
         self._credito.inserir_valor(valor_tipado)
         print(

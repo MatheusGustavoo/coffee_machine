@@ -1,18 +1,22 @@
-from Maquina import Estado_Maquina
+import ItemInterface
+import PedidoDTO
 
 
 class Pedido:
     _valor_total: float
-    _status_maquina: Estado_Maquina
+    _itens_pedido: list[ItemInterface]
 
-    def __init__(self, status_maquina: Estado_Maquina) -> None:
+    def __init__(self) -> None:
+        self._itens_pedido = []
         self._valor_total = 0.0
-        self._status_maquina = status_maquina
 
-    def incluir_item():
-        pass
+    def incluir_item(self, itens_pedido: PedidoDTO):
 
-    def remover_item():
+        for item in itens_pedido.itens:
+            self._itens_pedido.append(item)
+            self._update_valor_total(item.get_valor(), "adicionar")
+
+    def remover_item(self, item: ItemInterface):
         pass
 
     def get_valor_total(self) -> float:
