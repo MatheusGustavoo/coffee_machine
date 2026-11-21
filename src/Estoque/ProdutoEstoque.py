@@ -1,17 +1,24 @@
 from abc import ABC
 
-from src.TipoMedida import TipoMedida
 
-
-class Item(ABC):
+class ProdutoEstoque(ABC):
     CAPACIDADE_MAXIMA: int
     LIMITE_ALERTA: int
-    medida: TipoMedida
+    NOME: str
+    _produtos_disponiveis = []
 
     def __init__(self):
-        capacidade = getattr(self, "CAPACIDADE_MAXIMA", self.CAPACIDADE_MAXIMA)
-        self.quantidade = capacidade
-        self.alerta = "Nível baixo" if self.quantidade < self.LIMITE_ALERTA else ""
+        self.quantidade = self.CAPACIDADE_MAXIMA
+
+    def __init_subclass__(cls, **kwargs):
+        super().__init_subclass__(**kwargs)
+
+        if not getattr(cls, "__abstractmethods__", False) and cls not in ProdutoEstoque._produtos_disponiveis:
+            ProdutoEstoque._produtos_disponiveis.append(cls)
+
+    @classmethod
+    def obter_produtos_disponiveis(cls):
+        return cls._produtos_disponiveis.copy()
 
     @property
     def capacidade_maxima(self) -> int:
@@ -45,3 +52,6 @@ class Item(ABC):
             if quantidade < 0:
                 raise ValueError("A quantidade não pode ser negativa.")
             self.quantidade = min(self.quantidade + quantidade, self.CAPACIDADE_MAXIMA)
+
+
+Item = ProdutoEstoque

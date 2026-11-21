@@ -1,10 +1,9 @@
-from src.ProdutoEstoque import Item
+from Estoque.ProdutoEstoque import ProdutoEstoque
 from src.TipoMedida import TipoMedida
 
 
-class ChocolateEmPo(Item):
+class ChocolateEmPo(ProdutoEstoque):
     CAPACIDADE_MAXIMA = 400
-    CAPAXIDADE_MAXIMA = CAPACIDADE_MAXIMA
     LIMITE_ALERTA = 80
     medida = TipoMedida.G
 

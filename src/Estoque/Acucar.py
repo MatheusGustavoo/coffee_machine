@@ -1,10 +1,10 @@
-from src.ProdutoEstoque import Item
+from Estoque.ProdutoEstoque import Item
 from src.TipoMedida import TipoMedida
 
 
 class Acucar(Item):
+    NOME = "acucar"
     CAPACIDADE_MAXIMA = 300
-    CAPAXIDADE_MAXIMA = CAPACIDADE_MAXIMA
     LIMITE_ALERTA = 60
     medida = TipoMedida.G
 

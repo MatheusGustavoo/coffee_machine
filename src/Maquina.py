@@ -1,8 +1,8 @@
 import enum
 
+from Estoque.Estoque import Estoque
 from src.Credito import Credito, Valores
-from src.Estoque import Estoque
-from src.Excessoes import (
+from Excessoes.Excessoes import (
     CreditoInsuficienteError,
     EstoqueVazioError,
     MaquinaIndisponivelError,
