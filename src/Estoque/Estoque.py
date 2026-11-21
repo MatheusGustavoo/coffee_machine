@@ -1,3 +1,6 @@
+from dataclasses import asdict
+
+from Bebida import Bebida
 from Estoque.ProdutoEstoque import ProdutoEstoque
 
 
@@ -11,16 +14,14 @@ class Estoque:
     def listar_produtos(self) -> dict[str, ProdutoEstoque]:
         return self._lista_produtos.copy()
 
-    def decrementar_quantidade(self, nome_produto: str, quantidade: int):
-        if nome_produto in self._lista_produtos:
-            produto = self._lista_produtos[nome_produto]
-            produto.consumir(quantidade)
-        else:
-            raise KeyError(f"Produto {nome_produto} não encontrado no estoque.")
+    def decrementar_quantidade(self, bebida: Bebida, quantidade: int):
+        for produto in asdict(bebida):
+            if produto in self._lista_produtos:
+                self._lista_produtos[produto].consumir(
+                    getattr(bebida, produto) * quantidade
+                )
 
     def reabastecer_produto(self, nome_produto: str, quantidade: int | None = None):
         if nome_produto in self._lista_produtos:
             produto = self._lista_produtos[nome_produto]
             produto.reabastecer(quantidade)
-        else:
-            raise KeyError(f"Produto {nome_produto} não encontrado no estoque.")

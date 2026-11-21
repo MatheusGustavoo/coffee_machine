@@ -43,7 +43,7 @@ class Maquina:
                 f"A máquina não está disponível para iniciar um pedido. Estado atual: {self._estado.value}"
             )
         try:
-            pedido = Pedido()
+            pedido = Pedido(self._estoque)
             self.set_estado(Estado_Maquina.PREPARANDO)
             pedido.incluir_item(itens_pedido)
             # return "Pedido iniciado. A máquina está preparando a bebida."

@@ -8,4 +8,6 @@ class Bebida:
     cafe_g: float
     leite_ml: float
     preco: float
-    quantidade_acucar: float
+    chocolate_g: float
+    acucar_g: float
+    quantidade_acucar: float | None = None
