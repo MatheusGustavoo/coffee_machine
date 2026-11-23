@@ -1,54 +1,49 @@
 from dataclasses import replace
 
-from src.Bebida import Bebida
+from Catalogo.Bebida import Bebida
 
 CAFE_EXPRESSO = Bebida(
     nome="Café expresso",
-    agua_ml=40,
-    cafe_g=8,
-    leite_ml=0,
-    chocolate_g=0,
-    acucar_g=0,
+    agua=40,
+    cafe=8,
+    leite=0,
+    chocolate=0,
     preco=4.00,
 )
 
 CAFE_LONGO = Bebida(
     nome="Café longo",
-    agua_ml=120,
-    cafe_g=8,
-    leite_ml=0,
-    chocolate_g=0,
-    acucar_g=0,
+    agua=120,
+    cafe=8,
+    leite=0,
+    chocolate=0,
     preco=4.50,
 )
 
 CAFE_COM_LEITE = Bebida(
     nome="Café com leite",
-    agua_ml=40,
-    cafe_g=8,
-    leite_ml=150,
-    chocolate_g=0,
-    acucar_g=00,
+    agua=40,
+    cafe=8,
+    leite=150,
+    chocolate=0,
     preco=6.00,
 )
 
 CAPPUCCINO = Bebida(
     nome="Cappuccino",
-    agua_ml=40,
-    cafe_g=8,
-    leite_ml=100,
-    chocolate_g=5,
-    acucar_g=0,
+    agua=40,
+    cafe=8,
+    leite=100,
+    chocolate=5,
     preco=6.50,
 )
 
 CHOCOLATE_QUENTE = Bebida(
     nome="Chocolate quente",
-    agua_ml=50,
-    cafe_g=0,
-    leite_ml=120,
-    chocolate_g=30,
-    acucar_g=0,
+    agua=50,
+    cafe=0,
+    leite=120,
+    chocolate=30,
     preco=7.00,
 )
 
@@ -89,7 +84,7 @@ class BebidaFactory:
             return replace(bebida)
         if quantidade_acucar < 0:
             raise ValueError("A quantidade de açúcar não pode ser negativa.")
-        return replace(bebida, acucar_g=quantidade_acucar)
+        return replace(bebida, acucar=quantidade_acucar)
 
 
 catalogo = CatalogoBebidas(CATALOGO)

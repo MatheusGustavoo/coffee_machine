@@ -1,4 +1,4 @@
-from Bebida import Bebida
+from Catalogo.Bebida import Bebida
 from Catalogo.CatalogoBebidas import fabrica_bebidas
 from Estoque.Estoque import Estoque
 from PedidoDTO import PedidoDTO

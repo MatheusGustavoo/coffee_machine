@@ -37,7 +37,7 @@ class Maquina:
             f"Crédito: R${self._credito.disponivel:.2f}"
         )
 
-    def criar_pedidor(self, itens_pedido: PedidoDTO):
+    def criar_pedido(self, itens_pedido: PedidoDTO):
         if self._estado != Estado_Maquina.PRONTA:
             raise MaquinaIndisponivelError(
                 f"A máquina não está disponível para iniciar um pedido. Estado atual: {self._estado.value}"
