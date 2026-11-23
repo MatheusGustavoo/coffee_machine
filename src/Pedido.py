@@ -29,6 +29,7 @@ class Pedido:
                 self._estoque.decrementar_quantidade(bebida, 1)
                 self._itens_pedido.append(bebida)
                 self._update_valor_total(bebida.preco, "adicionar")
+                self._verificar_status(TipoPedido.EM_PREPARO)
                 self._status = TipoPedido.PRONTO
             except Exception as e:
                 raise ValueError(f"Erro ao incluir item {item}: {e!s}")
@@ -44,6 +45,15 @@ class Pedido:
             self._valor_total += valor
         elif operacao == "subtrair":
             self._valor_total -= valor
+
+    def _verificar_status(self, esperado: TipoPedido) -> None:
+        if self._status != esperado:
+            raise ValueError(
+                f"Status do pedido inválido. Esperado: {esperado.value}, Atual: {self._status.value}"
+            )
+
+    def set_status(self, novo_status: str) -> None:
+        self._status = TipoPedido(novo_status)
 
     # def get_itens_pedido(self) -> list[ItemInterface]:
     #     return self._itens_pedido

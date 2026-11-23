@@ -24,6 +24,7 @@ class Maquina:
     _estado: Estado_Maquina
     _credito: Credito
     _estoque: Estoque
+    _pedido_atual: Pedido | None
 
     def __init__(self) -> None:
         self.set_estado(Estado_Maquina.PRONTA)
@@ -41,6 +42,7 @@ class Maquina:
             )
         try:
             pedido = Pedido(self._estoque)
+            self._pedido_atual = pedido
             self.set_estado(Estado_Maquina.PREPARANDO)
             pedido.incluir_item(itens_pedido)
             self._credito.retirar_valor(pedido.get_valor_total())
@@ -60,3 +62,20 @@ class Maquina:
             f"Crédito inserido: R${valor_tipado.value:.2f}. "
             f"Crédito disponível: R${self._credito.disponivel:.2f}"
         )
+
+    def cancelar_pedido(self, id):
+        if self._estado != Estado_Maquina.PREPARANDO:
+            raise MaquinaIndisponivelError(
+                f"A máquina não está preparando um pedido. Estado atual: {self._estado.value}"
+            )
+
+        if self._pedido_atual is None:
+            raise ValueError("Não há pedido em andamento para cancelar.")
+
+        try:
+            self._pedido_atual.set_status("CANCELADO")
+            self._pedido_atual = None
+            self.set_estado(Estado_Maquina.PRONTA)
+            print("Pedido cancelado. Reembolsando crédito.")
+        except Exception as e:
+            raise ValueError(f"Erro ao cancelar pedido: {e!s}")
