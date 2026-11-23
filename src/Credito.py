@@ -10,16 +10,14 @@ class Valores(Enum):
     VINTE_REAIS = 20.00
 
     @classmethod
-    def de_valor(cls, valor: float | int) -> "Valores":
+    def de_valor(cls, valor: float) -> "Valores":
         if isinstance(valor, bool) or not isinstance(valor, (float, int)):
             raise TypeError("O valor do crédito deve ser numérico")
 
         try:
             return cls(valor)
         except ValueError as erro:
-            raise ValueError(
-                f"Valor de crédito não permitido: {valor:.2f}"
-            ) from erro
+            raise ValueError(f"Valor de crédito não permitido: {valor:.2f}") from erro
 
 
 class Credito:
@@ -45,7 +43,7 @@ class Credito:
     def zerar(self):
         self._atual = 0.00
 
-    def retirar_valor(self, valor: Valores):
+    def retirar_valor(self, valor: float | Valores):
         if not isinstance(valor, Valores):
             raise TypeError("Valor inválido")
 

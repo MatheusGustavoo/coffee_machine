@@ -1,13 +1,10 @@
 import enum
 
 from Estoque.Estoque import Estoque
-from src.Credito import Credito, Valores
 from Excessoes.Excessoes import (
-    CreditoInsuficienteError,
-    EstoqueVazioError,
     MaquinaIndisponivelError,
-    ProdutoIndisponivelError,
 )
+from src.Credito import Credito, Valores
 from src.Pedido import Pedido
 from src.PedidoDTO import PedidoDTO
 
@@ -46,25 +43,9 @@ class Maquina:
             pedido = Pedido(self._estoque)
             self.set_estado(Estado_Maquina.PREPARANDO)
             pedido.incluir_item(itens_pedido)
-            # return "Pedido iniciado. A máquina está preparando a bebida."
+            self._credito.retirar_valor(pedido.get_valor_total())
         except Exception as e:
             return str(e)
-
-    def _verificar_elegibilidade_do_pedido(self, pedido: Pedido) -> None:
-        if self._credito.disponivel < pedido.get_valor_total():
-            raise CreditoInsuficienteError(
-                "Crédito insuficiente. Por favor, insira crédito antes de iniciar um pedido."
-            )
-
-        elif self._estoque.vazio():
-            raise EstoqueVazioError(
-                "Estoque vazio. Por favor, reabasteça o estoque antes de iniciar um pedido."
-            )
-        for produto in self._estoque.listar_produtos():
-            if produto.get_quantidade() <= 0:
-                raise ProdutoIndisponivelError(
-                    f"Produto {produto} indisponível. Por favor, reabasteça o estoque."
-                )
 
     def set_estado(self, estado: Estado_Maquina) -> None:
         self._estado = estado
