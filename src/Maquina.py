@@ -79,3 +79,7 @@ class Maquina:
             print("Pedido cancelado. Reembolsando crédito.")
         except Exception as e:
             raise ValueError(f"Erro ao cancelar pedido: {e!s}")
+
+    def devolver_credito(self) -> None:
+        self._credito.zerar()
+        print(f"Crédito devolvido: R${self._credito.disponivel:.2f}")
