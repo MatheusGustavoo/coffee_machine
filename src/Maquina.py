@@ -46,6 +46,8 @@ class Maquina:
             self._credito.retirar_valor(pedido.get_valor_total())
         except Exception as e:
             return str(e)
+        finally:
+            self.set_estado(Estado_Maquina.PRONTA)
 
     def set_estado(self, estado: Estado_Maquina) -> None:
         self._estado = estado
