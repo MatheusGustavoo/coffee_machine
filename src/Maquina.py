@@ -1,14 +1,12 @@
 import enum
 
-from src.Credito import Credito, Valores
-from src.Estoque import Estoque
-from src.Excessoes import (
-    CreditoInsuficienteError,
-    EstoqueVazioError,
+from Estoque.Estoque import Estoque
+from Excessoes.Excessoes import (
     MaquinaIndisponivelError,
-    ProdutoIndisponivelError,
 )
+from src.Credito import Credito, Valores
 from src.Pedido import Pedido
+from src.PedidoDTO import PedidoDTO
 
 
 class Estado_Maquina(enum.Enum):
@@ -36,40 +34,24 @@ class Maquina:
             f"Crédito: R${self._credito.disponivel:.2f}"
         )
 
-    def realizar_pedido(self):
+    def criar_pedido(self, itens_pedido: PedidoDTO):
         if self._estado != Estado_Maquina.PRONTA:
             raise MaquinaIndisponivelError(
                 f"A máquina não está disponível para iniciar um pedido. Estado atual: {self._estado.value}"
             )
         try:
-            pedido = Pedido(status_maquina=self._estado)
-            self._verificar_elegibilidade_do_pedido(pedido)
+            pedido = Pedido(self._estoque)
             self.set_estado(Estado_Maquina.PREPARANDO)
-            return "Pedido iniciado. A máquina está preparando a bebida."
+            pedido.incluir_item(itens_pedido)
+            self._credito.retirar_valor(pedido.get_valor_total())
         except Exception as e:
             return str(e)
-
-    def _verificar_elegibilidade_do_pedido(self, pedido: Pedido) -> None:
-        if self._credito.disponivel < pedido.get_valor_total():
-            raise CreditoInsuficienteError(
-                "Crédito insuficiente. Por favor, insira crédito antes de iniciar um pedido."
-            )
-
-        elif self._estoque.vazio():
-            raise EstoqueVazioError(
-                "Estoque vazio. Por favor, reabasteça o estoque antes de iniciar um pedido."
-            )
-        for produto in self._estoque.listar_produtos():
-            if produto.get_quantidade() <= 0:
-                raise ProdutoIndisponivelError(
-                    f"Produto {produto} indisponível. Por favor, reabasteça o estoque."
-                )
 
     def set_estado(self, estado: Estado_Maquina) -> None:
         self._estado = estado
         print(f"Estado da máquina alterado para: {self._estado.value}")
 
-    def inserir_credito(self, valor: float | int) -> None:
+    def inserir_credito(self, valor: float) -> None:
         valor_tipado = Valores.de_valor(valor)
         self._credito.inserir_valor(valor_tipado)
         print(
