@@ -27,6 +27,7 @@ class Maquina:
     _pedido_atual: Pedido | None
 
     def __init__(self) -> None:
+        self._preparo_desde_limpeza = 0
         self.set_estado(Estado_Maquina.PRONTA)
         self._credito = Credito()
         self._estoque = Estoque()
@@ -46,10 +47,14 @@ class Maquina:
             self.set_estado(Estado_Maquina.PREPARANDO)
             pedido.incluir_item(itens_pedido)
             self._credito.retirar_valor(pedido.get_valor_total())
+
+            self.registrar_preparo_concluido()
+            
         except Exception as e:
             return str(e)
         finally:
-            self.set_estado(Estado_Maquina.PRONTA)
+            if self._estado != Estado_Maquina.AGUARDANDO_LIMPEZA:
+                self.set_estado(Estado_Maquina.PRONTA)
 
     def set_estado(self, estado: Estado_Maquina) -> None:
         self._estado = estado
@@ -83,3 +88,11 @@ class Maquina:
     def devolver_credito(self) -> None:
         self._credito.zerar()
         print(f"Crédito devolvido: R${self._credito.disponivel:.2f}")
+
+    def registrar_preparo_concluido(self) -> None:
+        self.preparo_desde_limpeza += 1
+        if self.preparo_desde_limpeza >= 30:
+            self.set_estado(Estado_Maquina.AGUARDANDO_LIMPEZA)
+
+    def registrar_limpeza(self) -> None:
+        self._preparo_desde_limpeza = 0
