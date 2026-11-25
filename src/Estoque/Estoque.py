@@ -26,7 +26,6 @@ class Estoque:
                         f"Erro ao decrementar quantidade do produto {produto}: {e}"
                     )
 
-    def reabastecer_produto(self, nome_produto: str, quantidade: int | None = None):
-        if nome_produto in self._lista_produtos:
-            produto = self._lista_produtos[nome_produto]
-            produto.reabastecer(quantidade)
+    def reabastecer(self):
+        for produto in self._lista_produtos.values():
+            produto.reabastecer()

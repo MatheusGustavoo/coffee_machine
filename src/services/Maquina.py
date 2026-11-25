@@ -1,12 +1,12 @@
 import enum
 
+from DTO.PedidoDTO import PedidoDTO
 from Estoque.Estoque import Estoque
 from Excessoes.Excessoes import (
     MaquinaIndisponivelError,
 )
 from services.Credito import Credito, Valores
 from services.Pedido import Pedido
-from DTO.PedidoDTO import PedidoDTO
 
 
 class Estado_Maquina(enum.Enum):
@@ -49,7 +49,7 @@ class Maquina:
             self._credito.retirar_valor(pedido.get_valor_total())
 
             self.registrar_preparo_concluido()
-            
+
         except Exception as e:
             return str(e)
         finally:
@@ -96,3 +96,16 @@ class Maquina:
 
     def registrar_limpeza(self) -> None:
         self._preparo_desde_limpeza = 0
+
+    def reabastecer_estoque(self, bebida, quantidade):
+        if self._estado != Estado_Maquina.MANUTENCAO:
+            raise MaquinaIndisponivelError(
+                f"A máquina não está em manutenção. Estado atual: {self._estado.value}"
+            )
+        try:
+            self._estoque.reabastecer()
+            print(
+                f"Estoque reabastecido para a bebida {bebida}. Quantidade: {quantidade}"
+            )
+        except Exception as e:
+            raise ValueError(f"Erro ao reabastecer estoque: {e!s}")
