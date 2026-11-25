@@ -7,6 +7,7 @@ from Excessoes.Excessoes import (
 )
 from services.Credito import Credito, Valores
 from services.Pedido import Pedido
+from src.Catalogo.CatalogoBebidas import CatalogoBebidas, catalogo
 
 
 class Estado_Maquina(enum.Enum):
@@ -25,12 +26,14 @@ class Maquina:
     _credito: Credito
     _estoque: Estoque
     _pedido_atual: Pedido | None
+    _catalogo_bebidas: CatalogoBebidas
 
     def __init__(self) -> None:
         self._preparo_desde_limpeza = 0
         self.set_estado(Estado_Maquina.PRONTA)
         self._credito = Credito()
         self._estoque = Estoque()
+        self._catalogo_bebidas = catalogo
         print(
             f"Máquina inicializada. Estado: {self._estado.value}. "
             f"Crédito: R${self._credito.disponivel:.2f}"
@@ -109,3 +112,14 @@ class Maquina:
             )
         except Exception as e:
             raise ValueError(f"Erro ao reabastecer estoque: {e!s}")
+
+    def atualizar_preco_bebida(self, bebida: str, novo_preco: int):
+        if self._estado != Estado_Maquina.MANUTENCAO:
+            raise MaquinaIndisponivelError(
+                f"A máquina não está em manutenção. Estado atual: {self._estado.value}"
+            )
+        try:
+            self._catalogo_bebidas.alterar_preco(bebida, novo_preco)
+            print(f"Preço da bebida {bebida} atualizado para R${novo_preco:.2f}")
+        except Exception as e:
+            raise ValueError(f"Erro ao atualizar preço da bebida: {e!s}")

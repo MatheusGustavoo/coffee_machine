@@ -73,6 +73,12 @@ class CatalogoBebidas:
     def listar(self) -> tuple[Bebida, ...]:
         return tuple(self._bebidas.values())
 
+    def alterar_preco(self, nome: str, novo_preco: float) -> None:
+        if novo_preco < 0:
+            raise ValueError("O preço não pode ser negativo.")
+        bebida = self.buscar(nome)
+        bebida.preco = novo_preco
+
 
 class BebidaFactory:
     def __init__(self, catalogo: CatalogoBebidas) -> None:

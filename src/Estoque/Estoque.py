@@ -29,3 +29,12 @@ class Estoque:
     def reabastecer(self):
         for produto in self._lista_produtos.values():
             produto.reabastecer()
+
+    def verificar_disponibilidade_bebida(self, bebida: Bebida, quantidade: int) -> bool:
+        for produto in asdict(bebida):
+            if produto in self._lista_produtos and (
+                self._lista_produtos[produto].get_quantidade()
+                < getattr(bebida, produto) * quantidade
+            ):
+                return False
+        return True
