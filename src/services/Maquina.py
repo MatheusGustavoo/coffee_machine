@@ -1,13 +1,12 @@
 import enum
 
-from DTO.PedidoDTO import PedidoDTO
-from Estoque.Estoque import Estoque
-from Excessoes.Excessoes import (
+from src.DTO.PedidoDTO import PedidoDTO
+from src.Estoque.Estoque import Estoque
+from src.Excessoes.Excessoes import (
     MaquinaIndisponivelError,
 )
-from services.Credito import Credito, Valores
-from services.Pedido import Pedido
-from src.Catalogo.CatalogoBebidas import CatalogoBebidas, catalogo
+from src.services.Credito import Credito, Valores
+from src.services.Pedido import Pedido
 
 
 class Estado_Maquina(enum.Enum):

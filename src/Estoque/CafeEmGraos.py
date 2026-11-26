@@ -1,5 +1,5 @@
-from Estoque.ProdutoEstoque import Item
-from src.TipoMedida import TipoMedida
+from src.Estoque.ProdutoEstoque import Item
+from src.models.estoque import TipoMedida
 
 
 class CafeEmGraos(Item):

@@ -1,6 +1,6 @@
 from dataclasses import replace
 
-from Catalogo.Bebida import Bebida
+from src.Catalogo.Bebida import Bebida
 
 CAFE_EXPRESSO = Bebida(
     nome="Café expresso",
