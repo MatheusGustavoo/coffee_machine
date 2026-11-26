@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from DTO.ItemDTO import ItemDTO
+from src.DTO.ItemDTO import ItemDTO
 
 
 class PedidoDTO(BaseModel):

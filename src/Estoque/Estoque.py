@@ -1,7 +1,7 @@
 from dataclasses import asdict
 
-from Catalogo.Bebida import Bebida
-from Estoque.ProdutoEstoque import ProdutoEstoque
+from src.Catalogo.Bebida import Bebida
+from src.Estoque.ProdutoEstoque import ProdutoEstoque
 
 
 class Estoque:

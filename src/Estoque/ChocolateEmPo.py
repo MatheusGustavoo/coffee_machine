@@ -1,5 +1,5 @@
-from Estoque.ProdutoEstoque import ProdutoEstoque
-from src.TipoMedida import TipoMedida
+from src.Estoque.ProdutoEstoque import ProdutoEstoque
+from src.models.estoque import TipoMedida
 
 
 class ChocolateEmPo(ProdutoEstoque):
