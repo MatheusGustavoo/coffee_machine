@@ -12,3 +12,12 @@ wheels/
 
 # notes
 diario.md
+.claude
+.agents
+docs
+skills-lock.json
+
+# Test coverage
+.coverage
+.coverage.*
+htmlcov/

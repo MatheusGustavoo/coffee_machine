@@ -12,3 +12,35 @@ dependencies = [
     "sqlalchemy>=2.1.9",
     "uvicorn>=0.54.0",
 ]
+
+[dependency-groups]
+test = [
+    "httpx>=0.28.1",
+    "pytest>=8.3.5",
+    "pytest-cov>=6.0.0",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "--cov --cov-report=term-missing"
+markers = [
+    "integration: tests that exercise multiple application components",
+]
+
+[tool.coverage.run]
+source = [
+    "src.Catalogo.Bebida",
+    "src.Catalogo.CatalogoBebidas",
+    "src.DTO.ItemDTO",
+    "src.DTO.PedidoDTO",
+    "src.Estoque.Estoque",
+    "src.Estoque.ProdutoEstoque",
+    "src.routes.produtos",
+    "src.services.Credito",
+    "src.services.Pedido",
+]
+
+[tool.coverage.report]
+fail_under = 75
+show_missing = true
